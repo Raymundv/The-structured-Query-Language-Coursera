@@ -1,0 +1,79 @@
+select * from "alanparadise/nw". "employees";
+/*  List all the products in the Northwinds database showing 
+productid, productname, 
+quantity per unit, unitprice, and unitsinstock.    */
+select productid, productname, quantityperunit, unitprice, unitsinstock
+  from "alanparadise/nw"."products";
+/* 2.2 For all employees at Northwinds, 
+list the first name and last 
+name concatenated together with a blank space in-between,
+ and the YEAR when they were hired.  */a
+select concat(firstname,' ', lastname) as "Name", date_part('year', hiredate)
+ --this is concatenating the first and last name
+  from "alanparadise/nw"."employees";
+--2.3 For all products in the Northwinds database, 
+--list the productname, unitprice, unitsinstock,
+--  and the total value of the inventory of that product 
+--as “Total Value”. 
+-- (HINT:  total value = unitsinstock * unitprice.) 
+select productname, unitprice, unitsinstock, unitprice * unitsinstock as "Total Value"
+  from "alanparadise/nw"."products";
+ /* 2.4 For all employees at Northwinds,
+  list the first name and last name concatenated together
+   with a blank space in-between with
+    a column header “Name”, and the name of the month 
+    (spelled out) for each employee’s birthday.   */
+select firstname || ' ' || lastname as "Name", to_char(birthdate, 'month')
+  from "alanparadise/nw"."employees";
+/* 2.  Practice some SELECT queries using the WHERE clause
+
+2.1 List the customerid, companyname,
+ and country for all customers NOT in the U.S.A.*/
+
+select customerid, companyname, country 
+  from "alanparadise/nw"."customers"
+  where Country <> 'USA';
+--2.2 For all products in the Northwinds database, list the 
+--productname, unitprice, unitsinstock,  and the
+-- total value of the inventory of that product 
+--as “Total Value” for all products with a Total Value
+-- greater than $1000.  
+--(HINT:  total value = unitsinstock * unitprice) 
+select productname, unitprice, unitsinstock, unitsinstock * unitprice as "TotalValue"
+  from "alanparadise/nw"."products"
+  where unitsinstock*unitprice > 1000;
+/*2.3 List the productid, productname, 
+and quantityperunit for all products that come in bottles.*/   
+select productid, productname, quantityperunit
+  from "alanparadise/nw"."products"
+  where quantityperunit like '%bottle%';
+--2.4 List the productid, productname, and unitprice
+--for all products whose categoryid is an ODD number.
+--(HINT:  categoryid is a one digit integer less 
+--than 9 …) 
+select productid, productname, unitprice, categoryid
+  from "alanparadise/nw"."products"
+  where categoryid in (2,4,6,8)
+--2.5 List the orderid,  customerid, and shippeddate 
+--for orders that shipped to Canada  in December 1996
+-- through the end of  January 1997. */
+select orderid, customerid, shippeddate
+  from "alanparadise/nw"."orders"
+  where shipcountry = 'Canada'
+  and (shippeddate between '1996-12-01' and '1997-01-31');
+
+
+--2.1 List the employeeid, firstname + lastname
+-- concatenated as ‘employee’, and the age of
+-- the employee  when they were hired. 
+select employeeid, firstname || ' ' || lastname as "employee",  age(HireDate, BirthDate) AS HIRE_AGE 
+    from "alanparadise/nw"."employees";
+
+--2.2 Run a query to calculate your age as of today.  
+select age(now(),'1998-09-15');
+--2.3 List the customerid, companyname and country 
+--for all customers whose region is NULL.    
+select customerid, companyname, country
+    from "alanparadise/nw"."customers"
+    where region is NULL;
+
